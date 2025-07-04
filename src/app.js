@@ -1,5 +1,5 @@
 // Redesigned by telegram.dog/TheFirstSpeedster at https://www.npmjs.com/package/@googledrive/index which was written by someone else, credits are given on Source Page.
-// v2.3.7
+// v2.3.8
 // Initialize the page
 function init() {
     document.siteName = $('title').html();
@@ -28,7 +28,7 @@ function init() {
   </div>
 </div>
 <br>
-<footer class="footer mt-auto py-3 text-muted ${UI.footer_style_class}" style="${UI.fixed_footer ?'position: fixed; ': ''}left: 0; bottom: 0; width: 100%; color: white; z-index: 9999;${UI.hide_footer ? ' display:none;': ' display:block;'}"><div class="container" style="width: auto; padding: 0 10px;"><p class="float-end"><a href="#">Back to top</a></p><p>© ${UI.copyright_year} - <a href=" ${UI.company_link}" target="_blank">${UI.company_name}</a>, All Rights Reserved.</p></div></footer>
+<footer class="footer mt-auto py-3 text-muted ${UI.footer_style_class}" style="${UI.fixed_footer ?'position: fixed; ': ''}left: 0; bottom: 0; width: 100%; color: white; z-index: 9999;${UI.hide_footer ? ' display:none;': ' display:block;'}"> <div class="container" style="width: auto; padding: 0 10px;"> <p class="float-end"> <a href="#">Back to top</a> </p> ${UI.credit ? '<p>Redesigned with <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="red" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" /> </svg> by <a href="https://www.npmjs.com/package/@googledrive/index" target="_blank">TheFirstSpeedster</a>, based on Open Source Softwares.</p>' : ''} <p>© ${UI.copyright_year} - <a href=" ${UI.company_link}" target="_blank"> ${UI.company_name}</a>, All Rights Reserved.</p> </div> </footer>
   `;
     $('body').html(html);
 }
@@ -121,7 +121,6 @@ function render(path) {
     }
 }
 
-
 // Render title
 function title(path) {
     path = decodeURI(path);
@@ -148,37 +147,29 @@ function nav(path) {
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="/${cur}:/">${UI.nav_link_1}</a>
+        <a class="nav-link" href="/${cur}:/"></a>
       </li>`;
+
     var names = window.drive_names;
     var drive_name = window.drive_names[cur];
 
-    // Dropdown to select different drive roots.
-    html += `<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${drive_name}</a><div class="dropdown-menu" aria-labelledby="navbarDropdown">`;
-    names.forEach((name, idx) => {
-        html += `<a class="dropdown-item"  href="/${idx}:/">${name}</a>`;
-    });
-    html += `</div></li>`;
-
-
     html += `<li class="nav-item">
     <a class="nav-link" href="${UI.contact_link}" target="_blank">${UI.nav_link_4}</a>
-  </li>${UI.show_logout_button ?'<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>': ''}`;
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="${UI.nav_link_1}">Login</a>
+  </li>`;
 
     var search_text = model.is_search_page ? (model.q || '') : '';
     var search_bar = `
 </ul>
-<form class="d-flex" method="get" action="/${cur}:search">
-<input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search" value="${search_text}" required>
-<button class="btn ${UI.search_button_class}" onclick="if($('#search_bar_form>input').val()) $('#search_bar_form').submit();" type="submit">Search</button>
-</form>
 </div>
 </div>
 </nav>
 `;
-
+	
     // Personal or team
     if (model.root_type < 2) {
         // Show search box
@@ -261,9 +252,6 @@ function requestListPath(path, params, resultCallback, authErrorCallback, retrie
     performRequest();
 }
 
-
-
-
 /**
  * Search POST request
  * @param params Form params
@@ -317,7 +305,6 @@ function requestSearch(params, resultCallback, retries = 3) {
     $('#update').html(`<div class='alert alert-info' role='alert'> Connecting...</div></div></div>`);
     performRequest(retries);
 }
-
 
 // Render file list
 function list(path, id = '', fallback = false) {
@@ -465,7 +452,6 @@ function list(path, id = '', fallback = false) {
             handleSuccessResult,
             null);
     }
-
 
     const copyBtn = document.getElementById("handle-multiple-items-copy");
 
@@ -1285,8 +1271,8 @@ function file_others(name, encoded_name, size, url, file_id, cookie_folder_id) {
             </div>
             <div class="card-text text-center">
             <div class="btn-group text-center">
-                <a href="${url}" type="button" class="btn btn-primary">Download</a>
-                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="${url}" type="button" class="btn btn-success">Download</a>
+                <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="sr-only"></span>
                 </button>
                 <div class="dropdown-menu">
@@ -1357,8 +1343,8 @@ function file_code(name, encoded_name, size, bytes, url, ext, file_id, cookie_fo
           </div>
           <div class="card-text text-center">
             <div class="btn-group text-center">
-              <a href="${url}" type="button" class="btn btn-primary">Download</a>
-              <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a href="${url}" type="button" class="btn btn-danger">Download</a>
+              <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="sr-only"></span>
               </button>
               <div class="dropdown-menu">
@@ -1391,10 +1377,14 @@ function file_code(name, encoded_name, size, bytes, url, ext, file_id, cookie_fo
     }
 }
 
-
-
 // Document display video |mp4|webm|avi|
 function file_video(name, encoded_name, size, poster, url, mimeType, file_id, cookie_folder_id) {
+    // Define all player icons
+    const vlc_icon = `<img src="https://i.ibb.co/8DWdwRnr/vlc.png" alt="VLC Player" style="height: 32px; width: 32px; margin-right: 5px;">`;
+    const mxplayer_icon = `<img src="https://i.ibb.co/xqytzzbY/Mxplayer-icon.png" alt="MX Player" style="height: 32px; width: 32px; margin-right: 5px;">`;
+    const xplayer_icon = `<img src="https://i.ibb.co/x83mLGBD/xplayer-icon.png" alt="XPlayer" style="height: 32px; width: 32px; margin-right: 5px;">`;
+    const playit_icon = `<img src="https://i.ibb.co/F4Fm9yRx/playit-icon.png" alt="Playit" style="height: 32px; width: 32px; margin-right: 5px;">`; 
+    const new_download_icon = `<img src="https://i.ibb.co/yBs1P9wN/Download.png" alt="Download" style="height: 32px; width: 32px; margin-right: 5px;">`;
     var url_base64 = btoa(url);
     // Split the file path into parts
     var path = window.location.pathname;
@@ -1445,51 +1435,141 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
             player_css = ''
         }
     }
-    // Add the container and card elements
-    var content = `
+  
+   // Add the container and card elements
+var content = `
     <div class="container text-center"><br>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          ${navigation}
-        </ol>
-      </nav>
       <div class="card text-center">
         <div class="text-center">
           <div class="${UI.file_view_alert_class}" id="file_details" role="alert">${name}<br>${size}</div>${player}</div>
         </br>
         ${UI.disable_video_download ? `` : `
           <div class="card-body">
-          <div class="input-group mb-4">
-          <input type="text" class="form-control" id="dlurl" value="${url}" readonly>
-          </div>
-          <div class="btn-group text-center">
-              <a href="${url}" type="button" class="btn btn-primary">Download</a>
-              <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="sr-only"></span>
+            <!-- Hidden URL input box -->
+            <div class="input-group mb-4" style="display: none;">
+              <input type="text" class="form-control" id="dlurl" value="${url}" readonly>
+            </div>
+            
+            <!-- First row of buttons - fixed width -->
+            <div class="d-flex justify-content-center gap-3 mb-3">
+              <button type="button" class="btn btn-outline-warning d-flex justify-content-center align-items-center" style="width: 160px;"
+                onclick="window.location.href='intent:${url}#Intent;package=org.videolan.vlc;category=android.intent.category.DEFAULT;type=video/*;S.title=${encoded_name};end'">
+               <span class="d-flex align-items-center">
+                ${vlc_icon} VLC Player
+               </span>
               </button>
-              <div class="dropdown-menu">
-              <a class="dropdown-item" href="iina://weblink?url=${url}">IINA</a>
-              <a class="dropdown-item" href="potplayer://${url}">PotPlayer</a>
-              <a class="dropdown-item" href="vlc://${url}">VLC Mobile</a>
-              <a class="dropdown-item" href="${url}">VLC Desktop</a>
-              <a class="dropdown-item" href="nplayer-${url}">nPlayer</a>
-              <a class="dropdown-item" href="intent://${url}#Intent;type=video/any;package=is.xyz.mpv;scheme=https;end;">mpv-android</a>
-              <a class="dropdown-item" href="mpv://${url_base64}">mpv x64</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;package=com.mxtech.videoplayer.ad;S.title=${encoded_name};end">MX Player (Free)</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;package=com.mxtech.videoplayer.pro;S.title=${encoded_name};end">MX Player (Pro)</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;component=idm.internet.download.manager/idm.internet.download.manager.Downloader;S.title=${encoded_name};end">1DM (Free)</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;component=idm.internet.download.manager.adm.lite/idm.internet.download.manager.Downloader;S.title=${encoded_name};end">1DM (Lite)</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;component=idm.internet.download.manager.plus/idm.internet.download.manager.Downloader;S.title=${encoded_name};end">1DM+ (Plus)</a>
-              </div>
-          </div>          
+
+              <button type="button" class="btn btn-outline-info d-flex justify-content-center align-items-center" style="width: 160px;"
+                onclick="window.location.href='intent:${url}#Intent;package=com.mxtech.videoplayer.ad;category=android.intent.category.DEFAULT;type=video/*;S.title=${encoded_name};end'">
+                <span class="d-flex align-items-center gap-1">
+                ${mxplayer_icon} MX Player
+                </span>
+              </button> 
+            </div>
+            
+            <!-- Second row of buttons - fixed width -->
+            <div class="d-flex justify-content-center gap-3 mb-4">
+              <button type="button" class="btn btn-outline-success d-flex justify-content-center align-items-center" style="width: 160px;"
+                onclick="window.location.href='intent:${url}#Intent;package=video.player.videoplayer;category=android.intent.category.DEFAULT;type=video/*;S.title=${encoded_name};end'">
+               <span class="d-flex align-items-center gap-1">
+               ${xplayer_icon} XPlayer
+               </span>
+              </button>
+
+              <button type="button" class="btn btn-outline-danger d-flex justify-content-center align-items-center" style="width: 160px;"
+                onclick="window.location.href='intent:${url}#Intent;package=com.playit.videoplayer;category=android.intent.category.DEFAULT;type=video/*;S.title=${encoded_name};end'">
+               <span class="d-flex align-items-center gap-1"> 
+               ${playit_icon} PLAYit
+							 </span>
+              </button>
+            </div>
+            
+              <!-- DOWNLOAD BUTTON -->
+            <div class="d-flex justify-content-center">
+              <button id="download-btn" class="btn btn-outline-secondary btn-lg fw-bold d-flex align-items-center justify-content-center gap-2" style="padding: 10px 24px; font-size: 1.1rem; position: relative;">
+                ${new_download_icon} DOWNLOAD
+                <div id="download-spinner" class="spinner" style="display: none;">
+                  <div class="spinner-circle"></div>
+                </div>
+              </button>
+            </div>
           </div>
-          </div>
-          `}
+        `}
       </div>
     </div>
-  `;
-    $("#content").html(content);
+    
+    <style>
+      /* Loading spinner styles */
+      .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      .spinner-circle {
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spinner-rotate 1s linear infinite;
+      }
+      
+      @keyframes spinner-rotate {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Center button content */
+      .d-flex.align-items-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .gap-2 {
+        gap: 8px;
+      }
+    </style>
+    `;
 
+    // Set the content
+    $("#content").html(content);
+    
+    // Add event listener for the download button
+    if (!UI.disable_video_download) {
+        document.getElementById('download-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const button = this;
+            const spinner = button.querySelector('#download-spinner');
+            
+            // Show spinner and disable button
+            spinner.style.display = 'block';
+            button.disabled = true;
+            
+            // Change button text
+            button.innerHTML = `${new_download_icon} DOWNLOADING...`;
+            
+            // Simulate download process (1.5 seconds)
+            setTimeout(() => {
+                // Create a hidden link to trigger the actual download
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = name;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                // Hide spinner and restore button after 0.5s
+                setTimeout(() => {
+                    spinner.style.display = 'none';
+                    button.disabled = false;
+                    button.innerHTML = `${new_download_icon} DOWNLOAD`;
+                }, 500);
+            }, 1500);
+        });
+		}
     // Load Video.js and initialize the player
     var videoJsScript = document.createElement('script');
     videoJsScript.src = player_js;
@@ -1511,7 +1591,7 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
             });
         } else if (player_config.player == "jwplayer") {
             jwplayer("player").setup({
-                file: url + "&inline=true",
+                file: url,
                 type: mimeType,
                 autostart: false,
                 image: poster,
@@ -1571,56 +1651,51 @@ function file_audio(name, encoded_name, size, url, file_id, cookie_folder_id) {
     }
 
     // Add the container and card elements
-    var content = `
-    <div class="container text-center"><br>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          ${navigation}
-        </ol>
-      </nav>
-      <div class="card text-center">
-        <div class="text-center">
-          <div class="${UI.file_view_alert_class}" id="file_details" role="alert">${name}<br>${size}</div>
-          ${UI.disable_player ? `` : `
-          <video id="aplayer" poster="${UI.audioposter}" muted=true class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%" data-setup='{"fluid": true}' style="--plyr-captions-text-color: #ffffff;--plyr-captions-background: #000000;">
-            <source src="${url}" type="audio/mpeg" />
-            <source src="${url}" type="audio/ogg" />
-            <source src="${url}" type="audio/wav" />
-          </video>`}
-        </div>
-        </br>
-        ${UI.disable_audio_download ? `` : `
-          <div class="card-body">
-          <div class="input-group mb-4">
-          <input type="text" class="form-control" id="dlurl" value="${url}" readonly>
-          </div>
-          <div class="btn-group text-center">
-              <a href="${url}" type="button" class="btn btn-primary">Download</a>
-              <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="sr-only"></span>
-              </button>
-              <div class="dropdown-menu">
-              <a class="dropdown-item" href="iina://weblink?url=${url}">IINA</a>
-              <a class="dropdown-item" href="potplayer://${url}">PotPlayer</a>
-              <a class="dropdown-item" href="vlc://${url}">VLC Mobile</a>
-              <a class="dropdown-item" href="${url}">VLC Desktop</a>
-              <a class="dropdown-item" href="nplayer-${url}">nPlayer</a>
-              <a class="dropdown-item" href="intent://${url}#Intent;type=audio/any;package=is.xyz.mpv;scheme=https;end;">mpv-android</a>
-              <a class="dropdown-item" href="mpv://${url_base64}">mpv x64</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;package=com.mxtech.videoplayer.ad;S.title=${encoded_name};end">MX Player (Free)</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;package=com.mxtech.videoplayer.pro;S.title=${encoded_name};end">MX Player (Pro)</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;component=idm.internet.download.manager/idm.internet.download.manager.Downloader;S.title=${encoded_name};end">1DM (Free)</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;component=idm.internet.download.manager.adm.lite/idm.internet.download.manager.Downloader;S.title=${encoded_name};end">1DM (Lite)</a>
-              <a class="dropdown-item" href="intent:${url}#Intent;component=idm.internet.download.manager.plus/idm.internet.download.manager.Downloader;S.title=${encoded_name};end">1DM+ (Plus)</a>
-              </div>
-          </div>
-          <br>
-          </div>
-          </div>
-          `}
-      </div>
+var content = `
+<div class="container text-center"><br>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      ${navigation}
+    </ol>
+  </nav>
+  <div class="card text-center">
+    <div class="text-center">
+      <div class="${UI.file_view_alert_class}" id="file_details" role="alert">${name}<br>${size}</div>
+      ${UI.disable_player ? `` : `
+      <video id="aplayer" poster="${UI.audioposter}" muted=true class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%" data-setup='{"fluid": true}' style="--plyr-captions-text-color: #ffffff;--plyr-captions-background: #000000;">
+        <source src="${url}" type="audio/mpeg" />
+        <source src="${url}" type="audio/ogg" />
+        <source src="${url}" type="audio/wav" />
+      </video>`}
     </div>
-  `;
+    </br>
+    ${UI.disable_audio_download ? `` : `
+      <div class="card-body">
+      <!-- URL input box hidden with style="display: none" -->
+      <div class="input-group mb-4" style="display: none;">
+        <input type="text" class="form-control" id="dlurl" value="${url}" readonly>
+      </div>
+      <div class="btn-group text-center">
+          <a href="${url}" type="button" class="btn btn-secondary">Download</a>
+          <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only"></span>
+          </button>
+          <div class="dropdown-menu">
+					<a class="dropdown-item" href="intent:${url}#Intent;package=com.playit.videoplayer;category=android.intent.category.DEFAULT;type=audio/*;S.title=${encoded_name};end">Playit</a>
+				  <a class="dropdown-item" href="intent:${url}#Intent;package=video.player.videoplayer;category=android.intent.category.DEFAULT;type=audio/*;S.title=${encoded_name};end">XPlayer</a>
+          <a class="dropdown-item" href="intent:${url}#Intent;package=com.mxtech.videoplayer.ad;category=android.intent.category.DEFAULT;type=audio/*;S.title=${encoded_name};end">MX Player</a>
+					<a class="dropdown-item" href="intent:${url}#Intent;package=org.videolan.vlc;category=android.intent.category.DEFAULT;type=video/*;S.title=${encoded_name};end">VLC Player</a>
+          <a class="dropdown-item" href="intent:${url}#Intent;component=idm.internet.download.manager/idm.internet.download.manager.Downloader;S.title=${encoded_name};end">1DM (Free)</a>
+          <a class="dropdown-item" href="intent:${url}#Intent;component=idm.internet.download.manager.adm.lite/idm.internet.download.manager.Downloader;S.title=${encoded_name};end">1DM (Lite)</a>
+          </div>
+      </div>
+      <br>
+      </div>
+      </div>
+      `}
+  </div>
+</div>
+`;
     $("#content").html(content);
 
     // Load Video.js and initialize the player
@@ -1637,8 +1712,6 @@ function file_audio(name, encoded_name, size, url, file_id, cookie_folder_id) {
     videoJsStylesheet.rel = 'stylesheet';
     document.head.appendChild(videoJsStylesheet);
 }
-
-
 
 // Document display pdf
 function file_pdf(name, encoded_name, size, url, file_id, cookie_folder_id) {
@@ -1686,8 +1759,8 @@ function file_pdf(name, encoded_name, size, url, file_id, cookie_folder_id) {
     </div>
     <div class="card-text text-center">
     <div class="btn-group text-center">
-        <a href="${url}" type="button" class="btn btn-primary">Download</a>
-        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a href="${url}" type="button" class="btn btn-success">Download</a>
+        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="sr-only"></span>
         </button>
         <div class="dropdown-menu">
@@ -1753,8 +1826,8 @@ function file_image(name, encoded_name, size, url, file_id, cookie_folder_id) {
           </div>
           <div class="card-text text-center">
             <div class="btn-group text-center">
-              <a href="${url}" type="button" class="btn btn-primary">Download</a>
-              <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a href="${url}" type="button" class="btn btn-success">Download</a>
+              <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="sr-only"></span>
               </button>
               <div class="dropdown-menu">
@@ -1789,7 +1862,6 @@ function utc2delhi(utc_datetime) {
     return `${date}-${month}-${year} ${hour}:${minute}:${second}`;
 }
 
-
 // bytes adaptive conversion to KB, MB, GB
 function formatFileSize(bytes) {
     if (bytes >= 1099511627776) {
@@ -1809,7 +1881,6 @@ function formatFileSize(bytes) {
     }
     return bytes;
 }
-
 
 String.prototype.trim = function(char) {
     if (char) {
@@ -1946,7 +2017,6 @@ async function copyFile(driveid) {
         document.getElementById('spinner').style.display = 'none';
     }
 }
-
 
 // create a MutationObserver to listen for changes to the DOM
 const observer = new MutationObserver(() => {
