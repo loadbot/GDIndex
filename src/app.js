@@ -1511,7 +1511,7 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
             });
         } else if (player_config.player == "jwplayer") {
             jwplayer("player").setup({
-                file: url,
+                file: url + "&inline=true",
                 type: mimeType,
                 autostart: false,
                 image: poster,
