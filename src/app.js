@@ -1441,7 +1441,7 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
             player_css = 'https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css'
         } else if (player_config.player == "jwplayer") {
             player = `<div id="player"></div>`
-            player_js = 'https://content.jwplatform.com/libraries/IDzF9Zmk.js'
+            player_js = 'https://content.jwplatform.com/libraries/KB5zFt7A.js'
             player_css = ''
         }
     }
