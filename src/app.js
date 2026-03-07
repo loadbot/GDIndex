@@ -1590,37 +1590,33 @@ var content = `
                 },
             });
         } else if (player_config.player == "jwplayer") {
-            jwplayer("player").setup({
-                file: url,
-                type: mimeType,
-                autostart: false,
-                image: poster,
-                width: "100%",
-                aspectratio: "16:9",
-                title: name,
-                description: "Powered by Google Drive Index",
-                tracks: [{
-                    file: url,
-                    kind: "captions",
-                    label: "Default",
-                    "default": true,
-                }],
-                captions: {
-                    color: "#f3f378",
-                    fontSize: 14,
-                    backgroundOpacity: 50,
-                    edgeStyle: "raised",
-                },
-            });
-        }
+		    jwplayer("player").setup({
+		        file: url,
+		        type: mimeType, 
+		        autostart: false,
+		        image: poster,
+		        width: "100%",
+		        aspectratio: "16:9",
+		        title: name,
+		        description: "Powered by Google Drive Index",
+		        captions: {
+		            color: "#f3f378",
+		            fontSize: 14,
+		            backgroundOpacity: 50,
+		            edgeStyle: "raised",
+		        },
+		    });
+		}
 
     };
     document.head.appendChild(videoJsScript);
 
+    if (player_css !== '') {
     var videoJsStylesheet = document.createElement('link');
     videoJsStylesheet.href = player_css;
     videoJsStylesheet.rel = 'stylesheet';
     document.head.appendChild(videoJsStylesheet);
+	}
 }
 
 
