@@ -1590,16 +1590,18 @@ var content = `
                 },
             });
 		} else if (player_config.player == "jwplayer") {
+		    // Determine the type. Trick the player into treating MKVs as MP4s.
+		    var playerType = (mimeType.includes("matroska") || name.toLowerCase().endsWith(".mkv")) ? "mp4" : mimeType;
+		
 		    jwplayer("player").setup({
 		        file: url,
-		        type: mimeType, 
+		        type: playerType, // <-- Use the mapped type here
 		        autostart: false,
 		        image: poster,
 		        width: "100%",
 		        aspectratio: "16:9",
 		        title: name,
 		        description: "Powered by Google Drive Index",
-		        // Removed the invalid tracks array
 		        captions: {
 		            color: "#f3f378",
 		            fontSize: 14,
