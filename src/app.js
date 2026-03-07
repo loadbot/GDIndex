@@ -1589,10 +1589,13 @@ var content = `
                     thumbnails: poster,
                 },
             });
-        } else if (player_config.player == "jwplayer") {
+		} else if (player_config.player == "jwplayer") {
+		    // Determine the type. Trick the player into treating MKVs as MP4s.
+		    var playerType = (mimeType.includes("matroska") || name.toLowerCase().endsWith(".mkv")) ? "mp4" : mimeType;
+		
 		    jwplayer("player").setup({
 		        file: url,
-		        type: mimeType, 
+		        type: playerType, // <-- Use the mapped type here
 		        autostart: false,
 		        image: poster,
 		        width: "100%",
