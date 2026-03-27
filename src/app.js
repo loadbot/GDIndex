@@ -162,63 +162,21 @@ function nav(path) {
     <a class="nav-link" href="${UI.nav_link_1}">Login</a>
   </li>`;
 
-var search_text = model.is_search_page ? (model.q || '') : '';
+    var search_text = model.is_search_page ? (model.q || '') : '';
     var search_bar = `
-    <form class="d-flex" id="gdi-search-form" style="flex-wrap:nowrap;align-items:center;gap:4px;">
-      <select id="gdi-scope" style="max-width:110px;font-size:0.8rem;border-radius:4px;border:1px solid rgba(255,255,255,0.35);background:rgba(0,0,0,0.2);color:inherit;padding:3px 5px;cursor:pointer;">
-        <option value="all">All Drives</option>
-        <option value="drive">This Drive</option>
-        <option value="directory">This Folder</option>
-      </select>
-      <input class="form-control me-1" id="gdi-search-q" name="q" type="search" placeholder="Search..." value="${search_text.replace(/"/g, '&quot;')}" style="min-width:100px;">
-      <button class="${UI.search_button_class}" type="submit"><i class="bi bi-search"></i></button>
-    </form>
 </ul>
 </div>
 </div>
 </nav>
 `;
-
+	
     // Personal or team
     if (model.root_type < 2) {
+        // Show search box
         html += search_bar;
     }
 
     $('#nav').html(html);
-
-    // Resolve current directory path for "This Folder" scope
-    var _cur = window.current_drive_order || 0;
-    var _raw = decodeURIComponent(window.location.pathname.replace(/^\/\d+:/, '') || '/');
-    var _dir = _raw.endsWith('/') ? _raw : _raw.substring(0, _raw.lastIndexOf('/') + 1);
-
-    // Pre-select scope based on whether we arrived via a scoped search
-    var scopeEl = document.getElementById('gdi-scope');
-    if (scopeEl) {
-        if (model.is_search_page && model.dir) {
-            scopeEl.value = 'directory';
-        } else if (model.is_search_page) {
-            scopeEl.value = 'drive';
-        }
-        // else default 'all' is already selected
-    }
-
-    var searchForm = document.getElementById('gdi-search-form');
-    if (searchForm) {
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            var q = (document.getElementById('gdi-search-q').value || '').trim();
-            if (!q) return;
-            var scope = document.getElementById('gdi-scope').value;
-            if (scope === 'directory') {
-                window.location.href = '/' + _cur + ':search?q=' + encodeURIComponent(q) + '&dir=' + encodeURIComponent(_dir);
-            } else if (scope === 'drive') {
-                window.location.href = '/' + _cur + ':search?q=' + encodeURIComponent(q);
-            } else {
-                // All drives — route to drive 0 which has search_all_drives=true
-                window.location.href = '/0:search?q=' + encodeURIComponent(q);
-            }
-        });
-    }
 }
 
 // Sleep Function to Retry API Calls
@@ -303,8 +261,7 @@ function requestSearch(params, resultCallback, retries = 3) {
     var p = {
         q: params['q'] || null,
         page_token: params['page_token'] || null,
-        page_index: params['page_index'] || 0,
-        dir_path: params['dir_path'] || null
+        page_index: params['page_index'] || 0
     };
 
     function performRequest(retries) {
@@ -915,9 +872,8 @@ function render_search_result_list() {
                         let $list = $('#list');
                         requestSearch({
                                 q: window.MODEL.q,
-                                dir_path: window.MODEL.dir || null,
                                 page_token: $list.data('nextPageToken'),
-								// Request next page
+                                // Request next page
                                 page_index: $list.data('curPageIndex') + 1
                             },
                             searchSuccessCallback
@@ -936,8 +892,7 @@ function render_search_result_list() {
 
     // Start requesting data from page 1
     requestSearch({
-        q: window.MODEL.q,
-        dir_path: window.MODEL.dir || null
+        q: window.MODEL.q
     }, searchSuccessCallback);
 
     const copyBtn = document.getElementById("handle-multiple-items-copy");
