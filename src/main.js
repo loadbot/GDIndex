@@ -1087,7 +1087,7 @@ function onSearchResultItemClick(file_id, can_preview) {
             method: 'POST',
             body: JSON.stringify(p),
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             }
         })
         .then(function(response) {
@@ -1106,11 +1106,11 @@ function onSearchResultItemClick(file_id, can_preview) {
             $('#modal-body-space').html(content);
         })
         .catch(function(error) {
-            console.log(error);
-            var link = ""
-            title = `Fallback Method`;
+            console.log('id2path failed, using fallback:', error);
+            title = `Open File`;
             $('#SearchModelLabel').html(title);
-            content = `<a class="btn btn-info" href="/fallback?id=${file_id}&${can_preview ? 'a=view' : ''}">Open</a> <a class="btn btn-secondary" href="/fallback?id=${file_id}&${can_preview ? 'a=view' : ''}" target="_blank">Open in New Tab</a>`;
+            var fb = '/fallback?id=' + encodeURIComponent(file_id) + (can_preview ? '&a=view' : '');
+            content = `<a class="btn btn-info" href="${fb}">Open</a> <a class="btn btn-secondary" href="${fb}" target="_blank">Open in New Tab</a>`;
             $('#modal-body-space').html(content);
         });
 }
